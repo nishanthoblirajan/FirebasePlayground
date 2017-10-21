@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "376799334827",
+    "firebase_url": "https://fir-playground-e5249.firebaseio.com",
+    "project_id": "fir-playground-e5249",
+    "storage_bucket": "fir-playground-e5249.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:376799334827:android:c24b4c004426a6a9",
+        "android_client_info": {
+          "package_name": "com.zaptrapp.firebaseplayground"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "376799334827-taaoikgvrqnu5el8601mk0ul6rhucr56.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.zaptrapp.firebaseplayground",
+            "certificate_hash": "6d344cfc0a2f359bad0618921d073a1e4a1938ec"
+          }
+        },
+        {
+          "client_id": "376799334827-6vtpftgh2l2puouooh7pjgvc03toktr8.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB-93uh4A64YPWw50yCU1XrL-9wt3P99Cw"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "376799334827-6vtpftgh2l2puouooh7pjgvc03toktr8.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
