@@ -147,8 +147,8 @@ public class StorageActivity extends AppCompatActivity {
 
 //                    Storage Schema
 //                    category
-//                            ----category.getName
-//                                ----name: category.getName
+//                        --category_name1
+//                          --productKey1.jpg
 
                     //TODO Change the schema to
 //                    Category
