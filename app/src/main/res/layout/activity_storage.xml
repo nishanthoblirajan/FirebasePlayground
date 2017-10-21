@@ -3,49 +3,61 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:orientation="vertical"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context="com.zaptrapp.firebaseplayground.StorageActivity">
 
 
     <EditText
+        android:id="@+id/category_et"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/category_et"
-        android:hint="Category"/>
+        android:hint="Category" />
 
     <EditText
+        android:id="@+id/weight_et"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/weight_et"
-        android:hint="Weight"/>
+        android:hint="Weight" />
+
     <Button
+        android:id="@+id/choose_image_bt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/choose_image_bt"
-        android:text="Choose Image"
-        android:onClick="chooseImage"/>
+        android:onClick="chooseImage"
+        android:text="Choose Image" />
 
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/upload_image_bt"
-        android:text="Upload Image"
-        android:onClick="uploadImage"/>
+
+        <Button
+            android:id="@+id/upload_image_bt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="uploadImage"
+            android:text="Upload Image" />
+
         <ProgressBar
+            android:id="@+id/progress_storage_activity"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="16dp"
-            android:id="@+id/progress_storage_activity"
-            android:visibility="invisible"/>
+            android:visibility="invisible" />
     </LinearLayout>
 
-    <ImageView
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/imageview_storage_activity" />
+        android:orientation="horizontal">
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+        <ImageView
+            android:id="@+id/imageview_storage_activity"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </LinearLayout>
 </LinearLayout>

@@ -7,17 +7,25 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.firebase.ui.database.FirebaseRecyclerAdapter;
+import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -36,11 +44,70 @@ public class StorageActivity extends AppCompatActivity {
     FirebaseStorage storage = FirebaseStorage.getInstance();
     StorageReference storageRef = storage.getReference();
 
+    DatabaseReference productStorage;
+    FirebaseDatabase database;
+    DatabaseReference categoryStorage;
+
+    //FirebaseRecyclerAdapter
+    FirebaseRecyclerAdapter<ProductFirebase, ProductHolder> recyclerAdapter;
+    private RecyclerView recyclerView;
+
+    public static final String TAG = StorageActivity.class.getSimpleName();
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        recyclerAdapter.startListening();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        recyclerAdapter.stopListening();
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_storage);
         initView();
+        database = FirebaseDatabase.getInstance();
+
+        productStorage = database.getReference("product");
+        categoryStorage = database.getReference("category");
+
+
+        //For display by categories
+        Query query = productStorage.child("category").equalTo("fing");
+
+        //For display by weight
+        Query query2 = productStorage.orderByChild("weight");
+
+
+        Log.d(TAG, "onCreate: "+query.toString());
+        FirebaseRecyclerOptions<ProductFirebase> options =
+                new FirebaseRecyclerOptions.Builder<ProductFirebase>()
+                        .setQuery(query, ProductFirebase.class)
+                        .build();
+        recyclerAdapter = new FirebaseRecyclerAdapter<ProductFirebase, ProductHolder>
+                (options) {
+            @Override
+            protected void onBindViewHolder(ProductHolder holder, int position, ProductFirebase model) {
+                holder.mProductName.setText(model.toString());
+//                holder.setName(model.getWeight());
+                Log.d(TAG, "onBindViewHolder: "+model.toString());
+            }
+
+            @Override
+            public ProductHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+                Log.d(TAG, "onCreateViewHolder: ");
+                View view = LayoutInflater.from(getApplicationContext()).inflate(R.layout.recycler_items, parent, false);
+                return new ProductHolder(view);
+            }
+        };
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setAdapter(recyclerAdapter);
+        Log.d(TAG, "onCreate: recyclerViewAdapterSet");
     }
 
     public String stringFromEt(EditText et) {
@@ -64,10 +131,9 @@ public class StorageActivity extends AppCompatActivity {
         if (filePath != null) {
             progressStorageActivity.setVisibility(View.VISIBLE);
 
-            FirebaseDatabase database = FirebaseDatabase.getInstance();
-            final DatabaseReference productStorage = database.getReference("product");
-            final String productKey = productStorage.push().getKey();
-            final DatabaseReference categoryStorage = database.getReference("category");
+            final String productKey;
+            productKey = productStorage.push().getKey();
+
 
             //Save it to FirebaseStorage
             StorageReference childRef = storageRef.child(stringFromEt(categoryEt)).child(productKey + ".jpg");
@@ -84,11 +150,16 @@ public class StorageActivity extends AppCompatActivity {
 //                            ----category.getName
 //                                ----name: category.getName
 
-//                    Product
-//                            ----productKey
-//                                ----id: productKey
-//                                ----category: categoryFirebase.getName()
-//                                ----weight: weightEt
+                    //TODO Change the schema to
+//                    Category
+//                         ---category_name1
+//                             --productKey1
+//                                ----id: productKey1
+//                                ----weight: weightEt1
+//                                ----imageUrl: from onSuccessUpload
+//                             --productKey2
+//                                ----id: productKey2
+//                                ----weight: weightEt2
 //                                ----imageUrl: from onSuccessUpload
                     progressStorageActivity.setVisibility(View.INVISIBLE);
                     Toast.makeText(StorageActivity.this, "Upload successful", Toast.LENGTH_SHORT).show();
@@ -101,7 +172,7 @@ public class StorageActivity extends AppCompatActivity {
                     productFirebase.setCategory(categoryFirebase.getName());
                     //Working but the above normal String method is preferred
 //                    productFirebase.setCategoryFirebase(categoryFirebase);
-                    productFirebase.setWeight(stringFromEt(weightEt));
+                    productFirebase.setWeight(Integer.parseInt(stringFromEt(weightEt)));
                     productFirebase.setImageUrl(taskSnapshot.getDownloadUrl().toString());
                     productStorage.child(productKey).setValue(productFirebase);
 
@@ -126,6 +197,7 @@ public class StorageActivity extends AppCompatActivity {
         uploadImageBt = (Button) findViewById(R.id.upload_image_bt);
         imageviewStorageActivity = (ImageView) findViewById(R.id.imageview_storage_activity);
         progressStorageActivity = (ProgressBar) findViewById(R.id.progress_storage_activity);
+        recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
     }
 
 

@@ -7,31 +7,18 @@ package com.zaptrapp.firebaseplayground;
 public class ProductFirebase {
     String id;
     String category;
-
-
-    public ProductFirebase(String id, String category, String weight, String imageUrl) {
-        this.id = id;
-        this.category = category;
-        this.weight = weight;
-        this.imageUrl = imageUrl;
-    }
-
-
-    public String getCategory() {
-        return category;
-    }
-
-    public void setCategory(String category) {
-        this.category = category;
-    }
-
-    String weight;
+    int weight;
     String imageUrl;
 
-
-    public ProductFirebase() {
+    @Override
+    public String toString() {
+        return "ProductFirebase{" +
+                "id='" + id + '\'' +
+                ", category='" + category + '\'' +
+                ", weight=" + weight +
+                ", imageUrl='" + imageUrl + '\'' +
+                '}';
     }
-
 
     public String getId() {
         return id;
@@ -41,12 +28,19 @@ public class ProductFirebase {
         this.id = id;
     }
 
+    public String getCategory() {
+        return category;
+    }
 
-    public String getWeight() {
+    public void setCategory(String category) {
+        this.category = category;
+    }
+
+    public int getWeight() {
         return weight;
     }
 
-    public void setWeight(String weight) {
+    public void setWeight(int weight) {
         this.weight = weight;
     }
 
@@ -58,4 +52,13 @@ public class ProductFirebase {
         this.imageUrl = imageUrl;
     }
 
+    public ProductFirebase() {
+    }
+
+    public ProductFirebase(String id, String category, int weight, String imageUrl) {
+        this.id = id;
+        this.category = category;
+        this.weight = weight;
+        this.imageUrl = imageUrl;
+    }
 }
